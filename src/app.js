@@ -117,77 +117,77 @@ app.post('/', (req, res) => {
 });
 
 app.post('/events', (req, res) =>{
-//     // Require google from googleapis package.
-//     const { google } = require('googleapis')
-//     // Require oAuth2 from our google instance.
-//     const { OAuth2 } = google.auth
+    // Require google from googleapis package.
+    const { google } = require('googleapis')
+    // Require oAuth2 from our google instance.
+    const { OAuth2 } = google.auth
   
-//     // Create a new instance of oAuth and set our Client ID & Client Secret.
-//     const oAuth2Client = new OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET)
+    // Create a new instance of oAuth and set our Client ID & Client Secret.
+    const oAuth2Client = new OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET)
   
-//     // Call the setCredentials method on our oAuth2Client instance and set our refresh token.
-//     oAuth2Client.setCredentials({
-//       refresh_token: process.env.REFRESH_TOKEN,
-//     })
+    // Call the setCredentials method on our oAuth2Client instance and set our refresh token.
+    oAuth2Client.setCredentials({
+      refresh_token: process.env.REFRESH_TOKEN,
+    })
   
-//     // Create a new calender instance.
-//     const calendar = google.calendar({ version: 'v3', auth: oAuth2Client })
+    // Create a new calender instance.
+    const calendar = google.calendar({ version: 'v3', auth: oAuth2Client })
   
-//     // Create a new event start date instance for temp uses in our calendar.
-//     const eventStartTime = new Date()
-//     eventStartTime.setDate(eventStartTime.getDay() + 2)
+    // Create a new event start date instance for temp uses in our calendar.
+    const eventStartTime = new Date()
+    eventStartTime.setDate(eventStartTime.getDay() + 2)
   
-//     // Create a new event end date instance for temp uses in our calendar.
-//     const eventEndTime = new Date()
-//     eventEndTime.setDate(eventEndTime.getDay() + 2)
-//     eventEndTime.setMinutes(eventEndTime.getMinutes() + 60)
+    // Create a new event end date instance for temp uses in our calendar.
+    const eventEndTime = new Date()
+    eventEndTime.setDate(eventEndTime.getDay() + 2)
+    eventEndTime.setMinutes(eventEndTime.getMinutes() + 60)
   
-//     // Create a dummy event for temp uses in our calendar
-//     const event = {
-//       summary: `${req.body.summary}`,
-//       description: `${req.body.description}`,
-//       colorId: 6,
-//       start: {
-//         dateTime: eventStartTime,
-//       },
-//       end: {
-//         dateTime: eventEndTime,
-//       },
-//     }
+    // Create a dummy event for temp uses in our calendar
+    const event = {
+      summary: `${req.body.summary}`,
+      description: `${req.body.description}`,
+      colorId: 6,
+      start: {
+        dateTime: eventStartTime,
+      },
+      end: {
+        dateTime: eventEndTime,
+      },
+    }
   
-//     // Check if we a busy and have an event on our calendar for the same time.
-//     calendar.freebusy.query(
-//       {
-//         resource: {
-//           timeMin: eventStartTime,
-//           timeMax: eventEndTime,
-//           items: [{ id: 'primary' }],
-//         },
-//       },
-//       (err, res) => {
-//         // Check for errors in our query and log them if they exist.
-//         if (err) return console.error('Free Busy Query Error: ', err)
+    // Check if we a busy and have an event on our calendar for the same time.
+    calendar.freebusy.query(
+      {
+        resource: {
+          timeMin: eventStartTime,
+          timeMax: eventEndTime,
+          items: [{ id: 'primary' }],
+        },
+      },
+      (err, res) => {
+        // Check for errors in our query and log them if they exist.
+        if (err) return console.error('Free Busy Query Error: ', err)
   
-//         // Create an array of all events on our calendar during that time.
-//         const eventArr = res.data.calendars.primary.busy
+        // Create an array of all events on our calendar during that time.
+        const eventArr = res.data.calendars.primary.busy
   
-//         // Check if event array is empty which means we are not busy
-//         if (eventArr.length === 0) {
-//           // If we are not busy create a new calendar event.
-//           return calendar.events.insert(
-//             { calendarId: 'primary', resource: event },
-//             err => {
-//               // Check for errors and log them if they exist.
-//               if (err) return console.error('Error Creating Calender Event:', err)
-//               // Else log that the event was created.
-//               return console.log('Event created successfully.')
-//             })
-//           }
-//         // If event array is not empty log that we are busy.
-//         return console.log(`Sorry I'm busy for that time...`)
-//       }
-//     )
-//     console.log(req.body)
+        // Check if event array is empty which means we are not busy
+        if (eventArr.length === 0) {
+          // If we are not busy create a new calendar event.
+          return calendar.events.insert(
+            { calendarId: 'primary', resource: event },
+            err => {
+              // Check for errors and log them if they exist.
+              if (err) return console.error('Error Creating Calender Event:', err)
+              // Else log that the event was created.
+              return console.log('Event created successfully.')
+            })
+          }
+        // If event array is not empty log that we are busy.
+        return console.log(`Sorry I'm busy for that time...`)
+      }
+    )
+    console.log(req.body)
     const sgMail = require('@sendgrid/mail')
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const msg = {
@@ -209,6 +209,7 @@ app.post('/events', (req, res) =>{
   })
 
 //create your host
-app.listen(3000, () => {
-    console.log('The server on this projects rests on port 3000');
+app.listen(process.env.port || 3000, function() {
+    console.log('We are now listening for request');
 });
+

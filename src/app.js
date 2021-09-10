@@ -113,7 +113,7 @@ app.post('/', (req, res) => {
         fun()
     }
     // res.send(var_arr);
-    res.render('events.html');
+    res.render('fetch.html');
 });
 
 app.post('/events', (req, res) =>{

@@ -213,5 +213,5 @@ app.post('/events', (req, res) =>{
 //     console.log('We are now listening for request');
 // });
 
-const port_number = server.listen(process.env.PORT || 3000);
+const port_number = app.listen(process.env.PORT || 3000);
 app.listen(port_number);

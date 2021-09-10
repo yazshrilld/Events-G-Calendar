@@ -209,7 +209,9 @@ app.post('/events', (req, res) =>{
   })
 
 //create your host
-app.listen(process.env.port || 3000, function() {
-    console.log('We are now listening for request');
-});
+// app.listen(process.env.port || 3000, function() {
+//     console.log('We are now listening for request');
+// });
 
+const port_number = server.listen(process.env.PORT || 3000);
+app.listen(port_number);
